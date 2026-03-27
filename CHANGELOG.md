@@ -35,7 +35,6 @@ Docs: https://docs.openclaw.ai
 - Plugins/bundles: make enabled bundle MCP servers expose runnable tools in embedded Pi, and default relative bundle MCP launches to the bundle root so marketplace bundles like Context7 work through Pi instead of stopping at config import.
 - Scope message SecretRef resolution and harden doctor/status paths. (#48728) Thanks @joshavant.
 - Plugins/testing: add a public `openclaw/plugin-sdk/testing` seam for plugin-author test helpers, and move bundled-extension-only test bridges out of `extensions/` into private repo test helpers.
-- Slack/threads: add `requireMentionInThreads` per-channel and account-level config to decouple thread mention gating from main-channel mention gating. (#30270)
 
 ### Breaking
 
