@@ -797,4 +797,20 @@ describe("requireMentionInThreads", () => {
     // Without requireMentionInThreads override, implicit mention from thread participation passes.
     expect(result).not.toBeNull();
   });
+
+  it("sets WasMentioned true when requireMentionInThreads false allows unmentioned thread reply", async () => {
+    const ctx = createMentionGateCtx({
+      C1: { allow: true, requireMention: true, requireMentionInThreads: false },
+    });
+    const result = await prepareSlackMessage({
+      ctx,
+      account,
+      message: makeMessage({ thread_ts: "100.000" }),
+      opts: { source: "message" },
+    });
+    expect(result).not.toBeNull();
+    // When the override explicitly relaxes mention requirements for threads,
+    // the turn should be treated as mentioned so downstream directive gating works.
+    expect(result!.ctxPayload.WasMentioned).toBe(true);
+  });
 });

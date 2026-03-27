@@ -493,7 +493,11 @@ export async function prepareSlackMessage(params: {
     hasControlCommand: hasControlCommandInMessage,
     commandAuthorized,
   });
-  const effectiveWasMentioned = mentionGate.effectiveWasMentioned;
+  // When requireMentionInThreads explicitly relaxes the requirement (false) for a thread
+  // that would otherwise need a mention, treat the turn as mentioned so downstream directive
+  // gating (elevated/exec) is not inadvertently stripped.
+  const effectiveWasMentioned =
+    mentionGate.effectiveWasMentioned || (threadMentionOverride === false && baseMentionRequired);
   if (isRoom && shouldRequireMention && mentionGate.shouldSkip) {
     ctx.logger.info({ channel: message.channel, reason: "no-mention" }, "skipping channel message");
     const pendingText = (message.text ?? "").trim();
